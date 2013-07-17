@@ -5,7 +5,7 @@ import math
 import pcduino_pin
 
 SEARCH_COLOR = 255 #255- white, 0 - black.
-DEBUG_DRAW = True
+DEBUG_DRAW = False
 DEBUG_FPS = False
 R_PART = 0.4
 ERROR_4_SMALL_RECT = 0.1
@@ -67,6 +67,7 @@ start_time = time.time()
 counter = 0
 
 while rval:
+    obj_detected = False
     img_gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
     img_blur = cv2.blur(img_gray, (3, 3))
     img_bin = cv2.threshold(img_blur, 127, 255, cv2.THRESH_OTSU)[1]
@@ -185,6 +186,7 @@ while rval:
             if DEBUG_DRAW:
                 cv2.circle(frame, (int(rect[0][0]), int(rect[0][1])), 5,(255,0,0), 10)
             makeControl((int(rect[0][0]), int(rect[0][1])), img_bin.shape[1], img_bin.shape[0])
+            obj_detected = True
 
 
     if DEBUG_DRAW:
@@ -194,6 +196,10 @@ while rval:
     if DEBUG_FPS:
         counter += 1
         print( np.float32(counter)/np.float32( time.time() - start_time ) )
+
+    if obj_detected is False:
+        pcduino_pin.moveCommand('none')
+        print('none')
 
     rval, frame = vc.read()
     key = cv2.waitKey(20)

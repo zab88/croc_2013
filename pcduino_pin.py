@@ -46,6 +46,11 @@ def moveCommand(direction):
         gpio.digitalWrite(led_pin15, gpio.HIGH)
     elif direction == 'left':
         gpio.digitalWrite(led_pin14, gpio.HIGH)
+    elif direction == 'none':
+        gpio.digitalWrite(led_pin17, gpio.LOW)
+        gpio.digitalWrite(led_pin16, gpio.LOW)
+        gpio.digitalWrite(led_pin15, gpio.LOW)
+        gpio.digitalWrite(led_pin14, gpio.LOW)
     return
 
 '''
