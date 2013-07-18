@@ -5,10 +5,10 @@ import math
 import pcduino_pin
 
 SEARCH_COLOR = 255 #255- white, 0 - black.
-DEBUG_DRAW = False
+DEBUG_DRAW = True
 DEBUG_FPS = False
 R_PART = 0.4
-ERROR_4_SMALL_RECT = 0.1
+ERROR_4_SMALL_RECT = 0.2
 ADD_BORDER = 31
 
 def detectHoleColor(img_bin, point_center, rr_opt):
@@ -68,6 +68,7 @@ counter = 0
 
 while rval:
     obj_detected = False
+    #frame = cv2.imread('bug/2013-07-17-124756_800x600_scrot.png')
     img_gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
     img_blur = cv2.blur(img_gray, (3, 3))
     img_bin = cv2.threshold(img_blur, 127, 255, cv2.THRESH_OTSU)[1]
@@ -120,12 +121,12 @@ while rval:
         approx_area = cv2.contourArea(approx)
         x_cnt, y_cnt, w_cnt, h_cnt = cv2.boundingRect(approx)
 
-        if approx_area > 2048 and np.float32(w_cnt)/np.float32(h_cnt)>0.7 and np.float32(w_cnt)/np.float32(h_cnt)<1.3:
+        if approx_area > 2048 and np.float32(w_cnt)/np.float32(h_cnt)>0.7 and np.float32(w_cnt)/np.float32(h_cnt)<1.4:
             cv2.drawContours( frame, [cnt], -1, (0,0,255), 1)
 
             rect = cv2.minAreaRect(approx)
             #print(rect)
-            if np.float32(rect[1][0])/np.float32(rect[1][1]) > 1.3 or np.float32(rect[1][0])/np.float32(rect[1][1])<0.7:
+            if np.float32(rect[1][0])/np.float32(rect[1][1]) > 1.4 or np.float32(rect[1][0])/np.float32(rect[1][1])<0.7:
                 continue
 
             #get color in center
